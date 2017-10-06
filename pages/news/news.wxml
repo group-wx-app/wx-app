@@ -1,0 +1,172 @@
+<view>
+  <view wx:for="{{newsList}}" wx:for-index="idx">{{idx}}.{{item.name}}--{{item.age}}</view>
+</view>
+
+<view>
+  <view class="section">
+    <view class="section_title">普通选择器</view>
+    <picker bindchange="bindPickerChange" value="{{index}}" range="{{selectArry}}">
+      <view class="picker">
+        当前选择：{{selectArry[index]}}
+      </view>
+    </picker>
+  </view>
+
+  <view class="section">
+    <view class="section_title">时间选择器</view>
+    <picker mode="time" value="{{time}}" start="09:01" end="21:01" bindchange="bindTimeChange">
+      <view class="picker">
+        当前选择: {{time}}
+      </view>
+    </picker>
+  </view>
+
+  <view class="section">
+    <view class="section_title">日期选择器</view>
+    <picker mode="date" value="{{date}}" bindchange="bindDateChange">
+      <view class="picker">
+        当前选择: {{date}}
+      </view>
+    </picker>
+  </view>
+
+  <!--地区选择器  -->
+  <view class="section">
+    <view class="section_title">省市区选择器</view>
+    <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
+      <view class="picker">
+        当前选择：{{region[0]}}，{{region[1]}}，{{region[2]}}
+      </view>
+    </picker>
+  </view>
+
+  <view class="section">
+    <view class="section_title">多列选择器</view>
+    <picker mode="multiSelector" bindchange="bindMultiPickerChange" bindcolumnchange="bindMultiPickerColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
+      <view class="picker">
+        当前选择：{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}
+      </view>
+    </picker>
+  </view>
+</view>
+
+<view>
+  <swiper indicator-dots="{{indicatorDots}}"
+  autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+    <block wx:for="{{imgUrls}}">
+      <swiper-item>
+        <image src="{{item}}" class="slide-image" width="355" height="150"/>
+      </swiper-item>
+    </block>
+  </swiper>
+  <button bindtap="changeIndicatorDots"> indicator-dots </button>
+  <button bindtap="changeAutoplay"> autoplay </button>
+  <slider bindchange="intervalChange" show-value min="500" max="2000"/> interval
+  <slider bindchange="durationChange" show-value min="1000" max="10000"/> duration
+</view>
+<!--movable-view  -->
+<view>
+  <view class="section">
+    <view class="section_title">movable-view区域小于movable-area</view>
+    <movable-area style="height: 200px;width: 200px;background: red;">
+      <movable-view style="height: 50px; width: 50px; background: blue;" x="{{movex}}" y="{{movey}}" direction="all">
+      </movable-view>
+    </movable-area>
+    <view class="btn-area">
+      <button size="mini" bindtap="movetap">click me to move to (30px, 30px)</button>
+    </view>
+    <view class="section_title">movable-view区域大于movable-area</view>
+    <movable-area style="height: 100px;width: 100px;background: red;" direction="all">
+      <movable-view style="height: 200px; width: 200px; background: blue;">
+      </movable-view>
+    </movable-area>
+  </view>
+</view>
+
+<!--选择图片  -->
+
+<view>
+  <button type="default" bindtap="chooseImg" hover-class="other-button-hover">选择图片</button>
+  <image wx:if="imgSrc" src='{{imgSrc}}'></image>
+</view>
+
+<!--getAccessToken  -->
+<view>
+  <button type="default" bindtap="getAccessToken" hover-class="other-button-hover">获取getAccessToken</button>
+  <text>{{AccessToken}}</text>
+</view>
+
+<!--getVistorTotle  -->
+<view>
+  <button type="default" bindtap="getVistorTotle" hover-class="other-button-hover">获取getVistorTotle</button>
+  <text>{{VistorTotle.length}}</text>
+</view>
+
+<!--form表单  -->
+<form class="send_tpls" bindsubmit="formSubmit" bindreset="formReset" report-submit='true'>
+  <view class="section section_gap">
+    <view class="section__title">switch:确认码？</view>
+    <switch name="switch"/>
+  </view>
+  <view class="section section_gap">
+    <view class="section__title">slider</view>
+    <slider name="slider" show-value ></slider>
+  </view>
+
+  <view class="section">
+    <view class="section_title">日期选择</view>
+    <picker mode="date" value="{{date}}" bindchange="bindDateChange">
+      <view class="picker">
+        当前选择: {{date}}
+      </view>
+    </picker>
+  </view>
+
+  <view class="section">
+    <view class="section_title">时间选择</view>
+    <picker mode="time" value="{{time}}" start="09:01" end="21:01" bindchange="bindTimeChange">
+      <view class="picker">
+        当前选择: {{time}}
+      </view>
+    </picker>
+  </view>
+
+  <view class="section">
+    <view class="section_title">input:姓名</view>
+    <input name="input" placeholder="please input here" />
+  </view>
+  <view class="section section_gap">
+    <view class="section_title">radio:性别</view>
+    <radio-group name="radio-group">
+      <label><radio value="男"/>男</label>
+      <label><radio value="女"/>女</label>
+    </radio-group>
+  </view>
+  <view class="section">
+    <view class="section_title">input:住址</view>
+    <input name="input2" placeholder="please input here" />
+  </view>
+  <view class="section section_gap">
+    <view class="section_title">checkbox</view>
+    <checkbox-group name="checkbox">
+      <label><checkbox value="checkbox1"/>checkbox1</label>
+      <label><checkbox value="checkbox2"/>checkbox2</label>
+    </checkbox-group>
+  </view>
+  <view class="btn-area">
+    <text class="tips">注意：先点击上方的getAccessToken,通过sccesstoken获取openid发送模板消息</text>
+    <button formType="submit">Submit</button>
+    <button formType="reset">Reset</button>
+  </view>
+</form>
+
+<!--获取位置  -->
+<view>
+  <button type="default" bindtap="clickgetLocation" hover-class="other-button-hover">获取位置</button>
+  <text>{{VistorTotle.length}}</text>
+</view>
+
+<!--获取位置  -->
+<view>
+  <button type="default" bindtap="viewLocationInWx" hover-class="other-button-hover">WX地图查看位置</button>
+</view>

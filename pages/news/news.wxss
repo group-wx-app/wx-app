@@ -1,0 +1,22 @@
+/**news.wxss**/
+.section_title{
+  padding: 20rpx;
+}
+.picker{
+  background-color: #eee;
+  padding: 20rpx;
+}
+swiper{
+  margin-top: 30rpx;
+}
+.send_tpls input{
+  padding: 20rpx;
+  background-color: #eee;
+}
+.send_tpls radio-group,.send_tpls checkbox-group{
+  margin: 0 20rpx;
+}
+.tips{
+  color: #f00;
+  font-size: 22rpx;
+}

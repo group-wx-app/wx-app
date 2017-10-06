@@ -1,0 +1,14 @@
+/* pages/login/login.wxss */
+.login-box{
+  margin: 20rpx;
+}
+.login-box .title-text{
+  padding: 20rpx;
+}
+.login-box input{
+  padding: 0 20rpx;
+  border-bottom: 1px solid #eee;
+}
+.login-btn{
+  margin: 50rpx 30rpx;
+}

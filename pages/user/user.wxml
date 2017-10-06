@@ -1,0 +1,3 @@
+<view>
+  <text>{{nickName}}</text>
+</view>

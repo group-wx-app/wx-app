@@ -1,0 +1,10 @@
+<view>
+  <view class='login-box'>
+    <view class='title-text'>用户名</view>
+    <view><input type='text' placeholder='请输入用户名' bindinput='usernameInput'/></view>
+    <view class='title-text'>密码</view>
+    <view><input type='password' placeholder='请输入密码' bindinput='passwordInput'/></view>
+    <view><button class='login-btn' type="primary" bindtap='loginClik'>登录</button></view>
+  </view>
+
+</view>
