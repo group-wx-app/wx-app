@@ -108,7 +108,16 @@ Page({
     VistorTotle: '',
 
     // 获取用户的openid数据
-    userOpenId:''
+    userOpenId:'',
+
+    // 扫描二维码返回数据
+    getCoderes:'',
+
+    // 罗盘数据
+    getCompass:'',
+
+    // 检测所支持的生物认证
+    SupportSoter: ''
   },
   // 普通选择器
   bindPickerChange: function (e) {
@@ -347,6 +356,7 @@ Page({
 
   // 获取位置
   clickgetLocation:function(){
+    let self = this;
     wx.getLocation({
       type: 'wgs84',
       success: function (res) {
@@ -355,6 +365,7 @@ Page({
         var speed = res.speed
         var accuracy = res.accuracy
         console.log(res)
+        self.setData({ VistorTotle: res.latitude + ' ' + res.longitude})
       }
     })
   },
@@ -364,6 +375,7 @@ Page({
     wx.getLocation({
       type: 'gcj02', //返回可以用于wx.openLocation的经纬度
       success: function (res) {
+        console.log(res)
         var latitude = res.latitude
         var longitude = res.longitude
         wx.openLocation({
@@ -371,9 +383,127 @@ Page({
           longitude: longitude,
           scale: 28
         })
+      },fail:function(err){
+        console.log(err)
       }
     })
   },
+  // 在微信地图choose位置
+  chooseLocationInWx: function () {
+    wx.chooseLocation({
+      type: 'gcj02', //返回可以用于wx.openLocation的经纬度
+      success: function (res) {
+        var latitude = res.latitude
+        var longitude = res.longitude
+        var name = res.name
+        var address = res.address
+        console.log(res)
+        wx.openLocation({
+          name: name,
+          address: address,
+          latitude: latitude,
+          longitude: longitude,
+          scale: 28
+        })
+      }, fail: function (err) {
+        console.log(err)
+      }
+    })
+  },
+  // 扫描二维码
+  openCode:function(){
+    let self = this;
+    // 只允许从相机扫码
+    wx.scanCode({
+      onlyFromCamera: true,
+      success: (res) => {
+        console.log(res)
+        self.setData({ getCoderes:res })
+      }
+    })
+  },
+  // 监听罗盘
+  openCompass:function(){
+    let self = this;
+    wx.onCompassChange(function (res) {
+      console.log(res.direction)
+      self.setData({ getCompass: res.direction })
+    })
+    // wx.startCompass({
+    //   success:function(res){
+    //     console.log(res)
+    //     self.setData({ getCompass: res})
+    //   }
+    // })
+  },
+  // 关闭罗盘监听
+  closeCompass:function(){
+    let self = this;
+    wx.stopCompass({
+      success: function (res) {
+        console.log(res)
+        self.setData({ getCompass: res })
+      }
+    })
+  },
+
+  // 检测生物认证
+  checkIsSupportSoter:function(){
+    let self = this;
+    wx.checkIsSupportSoterAuthentication({
+      success(res) {
+        // res.supportMode = [] 不具备任何被SOTER支持的生物识别方式
+        // res.supportMode = ['fingerPrint'] 只支持指纹识别
+        // res.supportMode = ['fingerPrint', 'facial'] 支持指纹识别和人脸识别
+        console.log(res)
+        self.setData({ SupportSoter: res.supportMode})
+        if(res.supportMode){//如果支持生物认证
+          wx.startSoterAuthentication({ // 开始生物认证
+            requestAuthModes: ['fingerPrint'], //允许的生物鉴权方式，以数组的形式呈现。需要指纹识别，只需填入 'finerPrint‘
+            challenge: '123456', //官方称为「挑战因子」，可以将请求特征码（订单号、请求编号等）放入，确认用户的是授权哪一个请求
+            authContent: '请用指纹解锁',//在指纹识别的对话框中，向用户显示的提示信息
+            success(res) {
+              // 二次与本地校验签名（非必需）,但如果你的小程序需要更强的安全性（例如金融交易类的小程序），你还要确认指纹信息的真实性，以防有人以伪造数据的方式，破解指纹验证
+              if (res.errCode == 0){
+                console.log('token' + self.data.AccessToken, 'openid' + self.data.userOpenId)
+                let url = 'https://api.weixin.qq.com/cgi-bin/soter/verify_signature?access_token=' + self.data.AccessToken, data = { "openid": self.data.userOpenId, "json_string": res.resultJSON, "json_signature": res.resultJSONSignature };//需要先获取accessToken和openId
+                app.userRequest(url,data,'POST',function(res){
+                  console.log(res)
+                  if(res.data.is_ok){
+                    console.log('OK')
+                    wx.showToast({
+                      title: '成功',
+                      icon: 'success',
+                      duration: 2000
+                    })
+                  }else{
+                    console.log('ERR')
+                    wx.showModal({
+                      title: '提示',
+                      content: '出现错误，是否重新认证？',
+                      success: function (res) {
+                        if (res.confirm) {
+                          console.log('用户点击确定')
+                          self.checkIsSupportSoter()
+
+                        } else if (res.cancel) {
+                          console.log('用户点击取消')
+                        }
+                      }
+                    })
+                  }
+                })
+              }
+              // console.log(res)
+            }, fail(err){
+              console.log(err)
+            }
+          })
+        }
+      }
+    })
+  },
+
 
   /**
    * 生命周期函数--监听页面加载

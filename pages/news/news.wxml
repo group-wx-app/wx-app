@@ -94,6 +94,8 @@
 <view>
   <button type="default" bindtap="getAccessToken" hover-class="other-button-hover">获取getAccessToken</button>
   <text>{{AccessToken}}</text>
+  <button type="default" bindtap="getOpenId" hover-class="other-button-hover">获取Openid</button>
+  <text>{{userOpenId}}</text>
 </view>
 
 <!--getVistorTotle  -->
@@ -163,7 +165,7 @@
 <!--获取位置  -->
 <view>
   <button type="default" bindtap="clickgetLocation" hover-class="other-button-hover">获取位置</button>
-  <text>{{VistorTotle.length}}</text>
+  <text>{{VistorTotle}}</text>
 </view>
 
 <!--获取位置  -->
@@ -171,3 +173,30 @@
   <button type="default" bindtap="viewLocationInWx" hover-class="other-button-hover">WX地图查看位置</button>
 </view>
 
+<!--获取位置  -->
+<view>
+  <button type="default" bindtap="chooseLocationInWx" hover-class="other-button-hover">WX地图选择位置</button>
+</view>
+
+<!--扫描二维码  -->
+<view>
+  <button type="default" bindtap="openCode" hover-class="other-button-hover">扫描二维码</button>
+  <text>{{getCoderes}}</text>
+</view>
+
+<!--监听罗盘  -->
+<view>
+  <button type="default" bindtap="openCompass" hover-class="other-button-hover">监听罗盘</button>
+  <text>{{getCompass}}</text>
+</view>
+
+<!--停止监听罗盘  -->
+<view>
+  <button type="default" bindtap="closeCompass" hover-class="other-button-hover">停止监听罗盘</button>
+</view>
+
+<!--检测手机支持的生物认证  -->
+<view>
+  <button type="default" bindtap="checkIsSupportSoter" hover-class="other-button-hover">生物认证</button>
+  <text>{{SupportSoter}}</text>
+</view>
