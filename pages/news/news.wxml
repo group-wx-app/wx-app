@@ -170,3 +170,4 @@
 <view>
   <button type="default" bindtap="viewLocationInWx" hover-class="other-button-hover">WX地图查看位置</button>
 </view>
+
