@@ -93,7 +93,7 @@
 <!--getAccessToken  -->
 <view>
   <button type="default" bindtap="getAccessToken" hover-class="other-button-hover">获取getAccessToken</button>
-  <text>{{AccessToken}}</text>
+  <view>{{AccessToken}}</view>
   <button type="default" bindtap="getOpenId" hover-class="other-button-hover">获取Openid</button>
   <text>{{userOpenId}}</text>
 </view>
